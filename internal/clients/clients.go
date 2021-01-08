@@ -1,4 +1,4 @@
-package utils
+package clients
 
 import (
 	"net/http"
@@ -15,7 +15,7 @@ func withCSRFTokenHeader(cookies *cookiejar.Jar) autorest.PrepareDecorator {
 			if err == nil && cookies != nil {
 				for _, cookie := range cookies.Cookies(r.URL) {
 					if strings.EqualFold("csrftoken", cookie.Name) {
-						SetHeader(r, http.CanonicalHeaderKey("X-CSRFToken"), cookie.Value)
+						autorest.SetHeader(r, http.CanonicalHeaderKey("X-CSRFToken"), cookie.Value)
 						break
 					}
 				}
@@ -38,7 +38,7 @@ func requestDecorator(baseURI string) autorest.PrepareDecorator {
 	}
 }
 
-func ConfigureClient(client autorest.Client, baseURI string) error {
+func configureClient(client *autorest.Client, baseURI string) error {
 
 	client.RequestInspector = requestDecorator(baseURI)
 	client.SendDecorators = []autorest.SendDecorator{

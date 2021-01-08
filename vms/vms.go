@@ -2,19 +2,18 @@ package main
 
 import (
 	"context"
-	b64 "encoding/base64"
 	"fmt"
 	"os"
 	"strings"
 	"time"
 
 	"github.com/Azure/go-autorest/autorest"
-	"github.com/qnap/qvs-sdk-for-go-samples/clients"
-	"github.com/qnap/qvs-sdk-for-go-samples/utils"
+	"github.com/qnap/qvs-sdk-for-go-samples/internal/clients"
+	"github.com/qnap/qvs-sdk-for-go-samples/internal/config"
 )
 
-func printDiskInfo(ctx context.Context, baseURI string) {
-	dskcl, err := clients.NewDisksClient(baseURI)
+func printDiskInfo(ctx context.Context) {
+	dskcl, err := clients.NewDisksClient()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Failed to create disks client. Error: %v\n", err)
 	}
@@ -30,18 +29,17 @@ func printDiskInfo(ctx context.Context, baseURI string) {
 
 func main() {
 
-	autorest.SenderFactoryInstance = utils.SenderFactory
+	autorest.SenderFactoryInstance = clients.SenderFactory
+	config.ParseEnvironment()
 
-	baseURI := "https://fileserver/qvs"
-
-	cl, err := clients.NewAuthClient(baseURI)
+	cl, err := clients.NewAuthClient()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Failed to create auth client. Error: %v\n", err)
 		return
 	}
 	ctx := context.Background()
 
-	lstat, err := cl.Login(ctx, "remote_manager", b64.StdEncoding.EncodeToString([]byte("")))
+	lstat, err := cl.Login(ctx, config.ClientID(), config.ClientSecret())
 	if nil != err {
 		fmt.Fprintf(os.Stderr, "Failed to login. Error: %v\n", err)
 		return
@@ -58,7 +56,7 @@ func main() {
 		}
 	}()
 
-	vmcl, err := clients.NewVirtualMachinesClient(baseURI)
+	vmcl, err := clients.NewVirtualMachinesClient()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Failed to create virtual machines client. Error: %v\n", err)
 		return
@@ -127,5 +125,5 @@ func main() {
 			}
 		}
 	}
-	printDiskInfo(ctx, baseURI)
+	printDiskInfo(ctx)
 }

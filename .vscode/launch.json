@@ -12,7 +12,8 @@
             "program": "${file}",
             "env": {
                 "AZURE_GO_SDK_LOG_LEVEL": "DEBUG"
-            }
+            },
+            "envFile": "${workspaceRoot}/.env"
         }
     ]
 }

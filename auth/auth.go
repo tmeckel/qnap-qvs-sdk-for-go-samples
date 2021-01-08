@@ -2,29 +2,27 @@ package main
 
 import (
 	"context"
-	b64 "encoding/base64"
 	"fmt"
 	"os"
 
 	"github.com/Azure/go-autorest/autorest"
-	"github.com/qnap/qvs-sdk-for-go-samples/clients"
-	"github.com/qnap/qvs-sdk-for-go-samples/utils"
+	"github.com/qnap/qvs-sdk-for-go-samples/internal/clients"
+	"github.com/qnap/qvs-sdk-for-go-samples/internal/config"
 )
 
 func main() {
 
-	autorest.SenderFactoryInstance = utils.SenderFactory
+	autorest.SenderFactoryInstance = clients.SenderFactory
+	config.ParseEnvironment()
 
-	baseURI := "https://fileserver/qvs"
-
-	cl, err := clients.NewAuthClient(baseURI)
+	cl, err := clients.NewAuthClient()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Failed to create auth client. Error: %v\n", err)
 		return
 	}
 	ctx := context.Background()
 
-	lstat, err := cl.Login(ctx, "remote_manager", b64.StdEncoding.EncodeToString([]byte("")))
+	lstat, err := cl.Login(ctx, config.ClientID(), config.ClientSecret())
 	if nil != err {
 		fmt.Fprintf(os.Stderr, "Failed to login. Error: %v\n", err)
 		return

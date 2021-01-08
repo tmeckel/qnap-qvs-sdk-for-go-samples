@@ -33,6 +33,8 @@ github.com/tmeckel/go-autorest/autorest v0.11.15 h1:esm+dx1FqyLDAM3dTaNmx7STMZAD
 github.com/tmeckel/go-autorest/autorest v0.11.15/go.mod h1:eipySxLmqSyC5s5k1CLupqet0PSENBEDP93LQ9a8QYw=
 github.com/tmeckel/go-autorest/autorest v0.11.16-0.20210107205648-285de8ab1b9f h1:eeQCki0m7j9kaCiP84WC34yU4BUm1oxaGmK89iGIdZU=
 github.com/tmeckel/go-autorest/autorest v0.11.16-0.20210107205648-285de8ab1b9f/go.mod h1:eipySxLmqSyC5s5k1CLupqet0PSENBEDP93LQ9a8QYw=
+github.com/tmeckel/go-autorest/autorest v0.11.16-0.20210108090330-ec63aa606b53 h1:2wd7wEY0jUcwizl2RvDCUOc9KwMMYuD15E7CgeMoUBo=
+github.com/tmeckel/go-autorest/autorest v0.11.16-0.20210108090330-ec63aa606b53/go.mod h1:eipySxLmqSyC5s5k1CLupqet0PSENBEDP93LQ9a8QYw=
 github.com/tmeckel/qnap-qvs-sdk-for-go v0.0.0-20210107195250-3f3ea91ff360 h1:pRwkfm54VqJ6Lahe7kCqnJ+MfEMSxtRjaX7nXZHHaEk=
 github.com/tmeckel/qnap-qvs-sdk-for-go v0.0.0-20210107195250-3f3ea91ff360/go.mod h1:gFM48/aVRzDvUHlSZ0QRlYP+SuQF0sIDPsQ4iNR1fqU=
 golang.org/x/crypto v0.0.0-20190308221718-c2843e01d9a2/go.mod h1:djNgcEr1/C05ACkg1iLfiJU5Ep61QUkGW8qpdssI0+w=
