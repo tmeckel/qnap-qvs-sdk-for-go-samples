@@ -5,14 +5,12 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/Azure/go-autorest/autorest"
 	"github.com/qnap/qvs-sdk-for-go-samples/internal/clients"
 	"github.com/qnap/qvs-sdk-for-go-samples/internal/config"
 )
 
 func main() {
 
-	autorest.SenderFactoryInstance = clients.SenderFactory
 	config.ParseEnvironment()
 
 	cl, err := clients.NewAuthClient()

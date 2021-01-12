@@ -6,23 +6,49 @@ import (
 	"net/http/cookiejar"
 )
 
-var cookies *cookiejar.Jar
+type SenderFactory interface {
+	GetSingelton() (*http.Client, error)
+	CreateInstance(*cookiejar.Jar) (*http.Client, error)
+}
 
-func SenderFactory(renengotiation tls.RenegotiationSupport) (*http.Client, error) {
-	transport := http.DefaultTransport.(*http.Transport).Clone()
-	transport.TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
+type defaultSenderFactory struct {
+	cookies  *cookiejar.Jar
+	instance *http.Client
+}
+
+var DefaultSenderFactory = defaultSenderFactory{}
+
+func (s *defaultSenderFactory) GetSingelton() (*http.Client, error) {
 	// FIXME: make this thread-safe
-	if nil == cookies {
-		_cookies, err := cookiejar.New(nil)
+	err := s.initializeCookies()
+	if err != nil {
+		return nil, err
+	}
+	if s.instance == nil {
+		s.instance, err = s.CreateInstance(s.cookies)
 		if err != nil {
 			return nil, err
 		}
-		cookies = _cookies
 	}
+	return s.instance, nil
+}
 
+func (s *defaultSenderFactory) CreateInstance(cookies *cookiejar.Jar) (*http.Client, error) {
+	transport := http.DefaultTransport.(*http.Transport).Clone()
+	transport.TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
 	// transport.Proxy = func(*http.Request) (*url.URL, error) {
 	// 	return url.Parse("http://10.0.0.152:8888")
 	// }
-
 	return &http.Client{Jar: cookies, Transport: transport}, nil
+}
+
+func (s *defaultSenderFactory) initializeCookies() error {
+	if s.cookies == nil {
+		_cookies, err := cookiejar.New(nil)
+		if err != nil {
+			return err
+		}
+		s.cookies = _cookies
+	}
+	return nil
 }
